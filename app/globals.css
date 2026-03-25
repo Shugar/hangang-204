@@ -1,0 +1,552 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * DESIGN DIRECTION: Celadon - Warm & Serene Korean Aesthetic
+ * - Airbnb property website for HANGANG 204, Seoul
+ * - Warm, inviting, premium but approachable
+ * - Colors: Celadon green, warm copper, soft cream (nature-inspired)
+ * - Typography: Rounded Quicksand display + clean Inter body
+ * - Decorations: Subtle Korean-inspired geometric patterns
+ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-hand: var(--font-hand);
+  --font-korean: var(--font-korean);
+
+  --color-celadon: var(--celadon);
+  --color-celadon-light: var(--celadon-light);
+  --color-celadon-dark: var(--celadon-dark);
+  --color-hanji: var(--hanji);
+  --color-hanji-light: var(--hanji-light);
+  --color-cream: var(--cream);
+  --color-cream-dark: var(--cream-dark);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  --radius: 0.75rem;
+
+  /* Celadon (Korean Pottery) Color Palette */
+  --celadon: #6B9080;
+  --celadon-light: #9BB5A8;
+  --celadon-dark: #4D7565;
+
+  /* Hanji (Korean Paper) warm accents */
+  --hanji: #C4856A;
+  --hanji-light: #D9B899;
+
+  /* Background colors */
+  --cream: #FAF7F4;
+  --cream-dark: #F4EDE6;
+
+  /* Base colors */
+  --background: #FAF7F4;
+  --foreground: #2D2926;
+  --card: #FFFFFF;
+  --card-foreground: #2D2926;
+  --popover: #FFFFFF;
+  --popover-foreground: #2D2926;
+  --primary: #C4856A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F4EDE6;
+  --secondary-foreground: #2D2926;
+  --muted: #EDE8E3;
+  --muted-foreground: #6B6560;
+  --accent: #6B9080;
+  --accent-foreground: #FFFFFF;
+  --destructive: #D98080;
+  --border: rgba(107, 144, 128, 0.2);
+  --input: rgba(107, 144, 128, 0.12);
+  --ring: #6B9080;
+  --chart-1: #C4856A;
+  --chart-2: #6B9080;
+  --chart-3: #4D7565;
+  --chart-4: #9BB5A8;
+  --chart-5: #D9B899;
+  --sidebar: #F4EDE6;
+  --sidebar-foreground: #2D2926;
+  --sidebar-primary: #C4856A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #FAF7F4;
+  --sidebar-accent-foreground: #2D2926;
+  --sidebar-border: rgba(107, 144, 128, 0.12);
+  --sidebar-ring: #6B9080;
+}
+
+/* ================================
+   BASE STYLES
+   ================================ */
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+/* ================================
+   TYPOGRAPHY SYSTEM
+   ================================ */
+
+.headline-hero {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.headline-section {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.text-korean {
+  font-family: var(--font-korean);
+  letter-spacing: 0.02em;
+}
+
+.text-hand {
+  font-family: var(--font-hand);
+}
+
+.text-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ================================
+   TEXTURE & BACKGROUND EFFECTS
+   ================================ */
+
+.bg-gradient-radial {
+  background: radial-gradient(circle, var(--tw-gradient-stops));
+}
+
+.texture-paper {
+  position: relative;
+}
+
+.texture-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  z-index: 1;
+}
+
+.bg-warm-grain {
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 50%, var(--cream) 100%);
+  background-blend-mode: overlay, normal;
+}
+
+/* Korean-inspired lattice pattern */
+.korean-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0L60 30L30 60L0 30z' fill='%236B9080' fill-opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 30px 30px;
+}
+
+.wave-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 Q25 0 50 10 T100 10' stroke='%236B9080' stroke-opacity='0.1' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: 100px 20px;
+}
+
+/* ================================
+   CARD STYLES WITH DEPTH
+   ================================ */
+
+.card-elevated {
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 12px rgba(45, 41, 38, 0.06);
+}
+
+.card-elevated::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  z-index: -1;
+  background: var(--celadon);
+  opacity: 0.06;
+  border-radius: inherit;
+  transform: rotate(-0.5deg);
+}
+
+/* ================================
+   BUTTON EFFECTS
+   ================================ */
+
+.btn-ink-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-ink-effect::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.5s, opacity 0.3s;
+}
+
+.btn-ink-effect:active::before {
+  transform: scale(2.5);
+  opacity: 1;
+  transition: transform 0s, opacity 0s;
+}
+
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255,255,255,0.2) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.btn-shine:hover::after {
+  transform: translateX(100%);
+}
+
+/* ================================
+   ANIMATIONS
+   ================================ */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.01);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scroll-down {
+  0% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  80% {
+    transform: translateX(-50%) translateY(52px);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateX(-50%) translateY(52px);
+    opacity: 0;
+  }
+}
+
+@keyframes zoom-in {
+  0% {
+    transform: scale(0.92);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes text-slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2.5s ease-in-out infinite;
+}
+
+.animate-count-up {
+  animation: count-up 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.animate-scroll-down {
+  animation: scroll-down 2s ease-in-out infinite;
+}
+
+.animate-zoom-in {
+  animation: zoom-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-text-slide-up {
+  opacity: 0;
+  animation: text-slide-up 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Stagger delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* ================================
+   SECTION RHYTHM
+   ================================ */
+
+.section-tight {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.section-normal {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+
+.section-generous {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.section-asymmetric {
+  padding-top: 4rem;
+  padding-bottom: 7rem;
+}
+
+@media (min-width: 768px) {
+  .section-tight {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+  .section-normal {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  .section-generous {
+    padding-top: 8rem;
+    padding-bottom: 10rem;
+  }
+  .section-asymmetric {
+    padding-top: 5rem;
+    padding-bottom: 9rem;
+  }
+}
+
+/* ================================
+   REDUCED MOTION SUPPORT
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ================================
+   SCROLL REVEAL
+   ================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-delay-1 { transition-delay: 100ms; }
+.reveal-delay-2 { transition-delay: 200ms; }
+.reveal-delay-3 { transition-delay: 300ms; }
+.reveal-delay-4 { transition-delay: 400ms; }
+.reveal-delay-5 { transition-delay: 500ms; }
+.reveal-delay-6 { transition-delay: 600ms; }
+
+
+/* ================================
+   GALLERY LIGHTBOX
+   ================================ */
+
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+
+.gallery-grid img {
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.gallery-grid img:hover {
+  transform: scale(1.02);
+  filter: brightness(1.05);
+}
+
+@keyframes lightbox-slide-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes lightbox-slide-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes lightbox-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lightbox-slide-right {
+  animation: lightbox-slide-right 0.15s ease-out both;
+}
+
+.lightbox-slide-left {
+  animation: lightbox-slide-left 0.15s ease-out both;
+}
+
+/* Desktop: fade only. Mobile: slide */
+@media (min-width: 640px) {
+  .lightbox-slide-right,
+  .lightbox-slide-left {
+    animation-name: lightbox-fade;
+    animation-duration: 0.1s;
+  }
+}
