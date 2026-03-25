@@ -12,8 +12,25 @@ import {
   useReducedMotion,
   useMotionTemplate,
 } from "motion/react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AIRBNB_URL, HERO_PHOTO } from "@/lib/constants";
+
+const staggerVariants = {
+  hidden: {},
+  visible: {
+    transition: { staggerChildren: 0.1, delayChildren: 0.15 },
+  },
+};
+
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 32 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
 
 export function Hero() {
   const t = useTranslations("hero");
@@ -51,23 +68,6 @@ export function Hero() {
     [mouseX, mouseY, prefersReducedMotion]
   );
 
-  // Staggered entrance
-  const stagger = {
-    hidden: {},
-    visible: {
-      transition: { staggerChildren: 0.1, delayChildren: 0.15 },
-    },
-  };
-
-  const fadeUp = {
-    hidden: { opacity: 0, y: 32 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as const },
-    },
-  };
-
   return (
     <section
       ref={sectionRef}
@@ -96,9 +96,9 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/15" />
       <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
-      {/* Film grain texture */}
+      {/* Film grain texture — hidden on mobile for GPU perf */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-[0.035] mix-blend-overlay"
+        className="absolute inset-0 pointer-events-none opacity-[0.035] mix-blend-overlay hidden sm:block"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         }}
@@ -121,26 +121,26 @@ export function Hero() {
       >
         <div className="max-w-7xl mx-auto w-full px-6 sm:px-8 lg:px-12 pb-20 sm:pb-24 lg:pb-28">
           <motion.div
-            variants={stagger}
+            variants={staggerVariants}
             initial="hidden"
             animate="visible"
           >
             {/* Welcome line */}
             <motion.p
-              variants={fadeUp}
+              variants={fadeUpVariants}
               className="text-hand text-xl sm:text-2xl text-white/70 mb-4"
             >
               {t("welcome")}
             </motion.p>
 
             {/* Headline */}
-            <motion.h1 variants={fadeUp} className="headline-hero text-white text-[clamp(2.75rem,10vw,8rem)] leading-[0.95] mb-5">
+            <motion.h1 variants={fadeUpVariants} className="headline-hero text-white text-[clamp(2.75rem,10vw,8rem)] leading-[0.95] mb-5">
               HANGANG 204<span className="text-hanji">.</span>
             </motion.h1>
 
             {/* Tagline */}
             <motion.p
-              variants={fadeUp}
+              variants={fadeUpVariants}
               className="text-base sm:text-lg lg:text-xl font-light text-white/70 max-w-lg leading-relaxed mb-8 lg:mb-10"
             >
               {t("tagline")}
@@ -148,7 +148,7 @@ export function Hero() {
 
             {/* CTA buttons */}
             <motion.div
-              variants={fadeUp}
+              variants={fadeUpVariants}
               className="flex flex-col sm:flex-row gap-3 mb-12 sm:mb-14"
             >
               <Button
@@ -158,19 +158,7 @@ export function Hero() {
               >
                 <a href={AIRBNB_URL} target="_blank" rel="noopener noreferrer">
                   {tc("bookOnAirbnb")}
-                  <svg
-                    className="w-4 h-4 ml-2 inline-block"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
+                  <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
                 </a>
               </Button>
               <Button
@@ -185,15 +173,15 @@ export function Hero() {
 
             {/* Stats strip */}
             <motion.div
-              variants={fadeUp}
+              variants={fadeUpVariants}
               className="flex flex-wrap items-center gap-x-5 gap-y-1 text-[11px] sm:text-xs tracking-wide text-white/50 uppercase"
             >
               <span>{t("bedrooms")}</span>
-              <span className="w-px h-2.5 bg-white/20" aria-hidden />
+              <span className="w-px h-2.5 bg-white/20" aria-hidden="true" />
               <span>{t("guests")}</span>
-              <span className="w-px h-2.5 bg-white/20" aria-hidden />
+              <span className="w-px h-2.5 bg-white/20" aria-hidden="true" />
               <span>{t("yongsanSeoul")}</span>
-              <span className="hidden sm:block w-px h-2.5 bg-white/20" aria-hidden />
+              <span className="hidden sm:block w-px h-2.5 bg-white/20" aria-hidden="true" />
               <span className="hidden sm:block">{t("selfCheckin")}</span>
             </motion.div>
           </motion.div>

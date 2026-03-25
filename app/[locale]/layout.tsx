@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Quicksand, Inter, Caveat, Noto_Sans_KR } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import "../globals.css";
 
 const displayFont = Quicksand({
@@ -27,7 +27,7 @@ const koreanFont = Noto_Sans_KR({
   subsets: ["latin"],
   weight: ["400", "700"],
   display: "swap",
-  preload: false,
+  preload: true,
 });
 
 const handFont = Caveat({
@@ -40,64 +40,85 @@ const handFont = Caveat({
 
 const BASE_URL = "https://hangang204.com";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
-  title: {
-    default: "HANGANG 204 | Your Home in Seoul",
-    template: "%s | HANGANG 204",
-  },
-  description:
-    "A cozy 2-bedroom apartment near the Han River in Yongsan, Seoul. Self check-in, fully equipped kitchen, washer, Smart TV, and walking distance to Hangang Park. Book your stay today.",
-  keywords: [
-    "Seoul Airbnb",
-    "Yongsan apartment",
-    "Han River accommodation",
-    "Seoul short-term rental",
-    "Hangang Park stay",
-    "Seoul vacation rental",
-    "Korea apartment rental",
-    "Seoul self check-in",
-    "Yongsan Airbnb",
-    "Seoul travel accommodation",
-  ],
-  authors: [{ name: "Theo", url: BASE_URL }],
-  creator: "Theo",
-  publisher: "HANGANG 204",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  alternates: {
-    canonical: BASE_URL,
-  },
-  openGraph: {
-    title: "HANGANG 204 | Your Home in Seoul",
-    description:
-      "A cozy 2-bedroom apartment near the Han River in Yongsan, Seoul. Walking distance to Hangang Park. Book your stay today!",
-    url: BASE_URL,
-    siteName: "HANGANG 204",
-    locale: "en_US",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "HANGANG 204 | Your Home in Seoul",
-    description:
-      "Cozy 2-bedroom apartment near the Han River in Yongsan, Seoul. Self check-in, kitchen, and walking distance to Hangang Park.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+const fontVars = [displayFont, bodyFont, koreanFont, handFont]
+  .map((f) => f.variable)
+  .join(" ");
+
+const localeToOg: Record<Locale, string> = {
+  en: "en_US",
+  kr: "ko_KR",
+  jp: "ja_JP",
+};
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+
+  return {
+    metadataBase: new URL(BASE_URL),
+    title: {
+      default: t("title"),
+      template: "%s | HANGANG 204",
+    },
+    description: t("description"),
+    keywords: [
+      "Seoul Airbnb",
+      "Yongsan apartment",
+      "Han River accommodation",
+      "Seoul short-term rental",
+      "Hangang Park stay",
+      "Seoul vacation rental",
+      "Korea apartment rental",
+      "Seoul self check-in",
+      "Yongsan Airbnb",
+      "Seoul travel accommodation",
+    ],
+    authors: [{ name: "Theo", url: BASE_URL }],
+    creator: "Theo",
+    publisher: "HANGANG 204",
+    formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    alternates: {
+      canonical: BASE_URL,
+      languages: {
+        en: `${BASE_URL}/en`,
+        ko: `${BASE_URL}/kr`,
+        ja: `${BASE_URL}/jp`,
+      },
+    },
+    openGraph: {
+      title: t("title"),
+      description: t("ogDescription"),
+      url: BASE_URL,
+      siteName: "HANGANG 204",
+      locale: localeToOg[locale as Locale] ?? "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("ogDescription"),
+    },
+    robots: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+      },
     },
-  },
-};
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -112,7 +133,7 @@ export default async function LocaleLayout({
 }>) {
   const { locale } = await params;
 
-  if (!routing.locales.includes(locale as "en" | "kr" | "jp")) {
+  if (!routing.locales.includes(locale as Locale)) {
     notFound();
   }
 
@@ -122,9 +143,13 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className="scroll-smooth">
-      <body
-        className={`${displayFont.variable} ${bodyFont.variable} ${koreanFont.variable} ${handFont.variable} antialiased font-[family-name:var(--font-body)]`}
-      >
+      <body className={`${fontVars} antialiased font-[family-name:var(--font-body)]`}>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-white focus:text-foreground focus:px-4 focus:py-2 focus:rounded-lg focus:shadow-lg"
+        >
+          Skip to content
+        </a>
         <NextIntlClientProvider messages={messages}>
           {children}
         </NextIntlClientProvider>

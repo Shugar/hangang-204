@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
+import { Globe, ArrowUpRight, Menu, X } from "lucide-react";
 import { AIRBNB_URL } from "@/lib/constants";
 import { Logo } from "./Logo";
 import { routing, type Locale } from "@/i18n/routing";
@@ -19,6 +20,7 @@ export function Header() {
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const langRef = useRef<HTMLDivElement>(null);
   const t = useTranslations("header");
   const tc = useTranslations("common");
   const locale = useLocale() as Locale;
@@ -54,6 +56,36 @@ export function Header() {
 
     return () => observer.disconnect();
   }, []);
+
+  // Close language dropdown on outside click
+  useEffect(() => {
+    if (!isLangOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setIsLangOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", handleClick);
+    return () => document.removeEventListener("pointerdown", handleClick);
+  }, [isLangOpen]);
+
+  // Close menus on Escape
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsLangOpen(false);
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isMenuOpen]);
 
   const switchLocale = (newLocale: Locale) => {
     const segments = pathname.split("/");
@@ -103,21 +135,22 @@ export function Header() {
             </div>
 
             {/* Language switcher */}
-            <div className="relative ml-1">
+            <div className="relative ml-1" ref={langRef}>
               <button
                 onClick={() => setIsLangOpen(!isLangOpen)}
+                aria-expanded={isLangOpen}
+                aria-haspopup="menu"
                 className="text-[13px] text-foreground/60 hover:text-foreground hover:bg-black/[0.04] px-2.5 py-1.5 rounded-full transition-all flex items-center gap-1"
               >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
-                </svg>
+                <Globe className="w-3.5 h-3.5" aria-hidden="true" />
                 {localeLabels[locale]}
               </button>
               {isLangOpen && (
-                <div className="absolute top-full right-0 mt-2 bg-white/90 backdrop-blur-xl rounded-xl border border-black/[0.06] shadow-lg shadow-black/[0.05] py-1 min-w-[100px] animate-fade-in">
+                <div role="menu" className="absolute top-full right-0 mt-2 bg-white/90 backdrop-blur-xl rounded-xl border border-black/[0.06] shadow-lg shadow-black/[0.05] py-1 min-w-[100px] animate-fade-in">
                   {routing.locales.map((loc) => (
                     <button
                       key={loc}
+                      role="menuitem"
                       onClick={() => switchLocale(loc)}
                       className={`w-full text-left px-4 py-2 text-sm transition-colors ${
                         loc === locale
@@ -140,9 +173,7 @@ export function Header() {
               className="text-[13px] font-medium bg-foreground text-white pl-3.5 pr-3 py-1.5 rounded-full hover:bg-foreground/85 transition-colors flex items-center gap-1.5"
             >
               {tc("bookOnAirbnb")}
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-              </svg>
+              <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
             </a>
           </div>
 
@@ -150,20 +181,19 @@ export function Header() {
             className="md:hidden p-2 text-foreground/60 hover:text-foreground transition-colors"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isMenuOpen}
           >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              {isMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-              )}
-            </svg>
+            {isMenuOpen ? (
+              <X className="w-4 h-4" aria-hidden="true" />
+            ) : (
+              <Menu className="w-4 h-4" aria-hidden="true" />
+            )}
           </button>
         </div>
       </nav>
 
       {isMenuOpen && (
-        <div className="md:hidden mt-2 mx-auto max-w-3xl bg-white/80 backdrop-blur-xl rounded-2xl border border-black/[0.04] shadow-lg shadow-black/[0.03] p-2 animate-fade-in">
+        <div role="dialog" aria-label="Navigation menu" className="md:hidden mt-2 mx-auto max-w-3xl bg-white/80 backdrop-blur-xl rounded-2xl border border-black/[0.04] shadow-lg shadow-black/[0.03] p-2 animate-fade-in">
           <div className="flex flex-col">
             {navLinks.map((link) => (
               <Link
@@ -208,9 +238,7 @@ export function Header() {
                 onClick={() => setIsMenuOpen(false)}
               >
                 {tc("bookOnAirbnb")}
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                </svg>
+                <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             </div>
           </div>

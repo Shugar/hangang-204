@@ -14,7 +14,7 @@ export default function Home() {
     <>
       <ScrollReveal />
       <Header />
-      <main>
+      <main id="main">
         <Hero />
         <Gallery />
         <About />
