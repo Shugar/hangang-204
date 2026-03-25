@@ -43,7 +43,7 @@ export function Header() {
           }
         }
       },
-      { threshold: 0.3, rootMargin: "-80px 0px -50% 0px" }
+      { threshold: 0.1, rootMargin: "-80px 0px -60% 0px" }
     );
 
     const sections = sectionIds

@@ -13,7 +13,7 @@ export function Logo({ size = 28, className = "" }: LogoProps) {
       className={className}
       aria-hidden="true"
     >
-      <rect width="32" height="32" rx="8" className="fill-accent" />
+      <rect width="32" height="32" rx="8" className="fill-primary" />
       <path
         d="M6 14 Q11 8 16 14 T26 14"
         stroke="white"
