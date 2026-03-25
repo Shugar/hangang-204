@@ -10,8 +10,8 @@ import { routing, type Locale } from "@/i18n/routing";
 
 const localeLabels: Record<Locale, string> = {
   en: "English",
-  ko: "한국어",
-  ja: "日本語",
+  kr: "한국어",
+  jp: "日本語",
 };
 
 export function Header() {
